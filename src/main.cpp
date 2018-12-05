@@ -1,6 +1,15 @@
 #include <Arduino.h>
 #include <esp_now.h>
+#include <esp_wifi.h>
+
 #include <WiFi.h>
+#if CONFIG_STATION_MODE
+#define ESPNOW_WIFI_MODE WIFI_MODE_STA
+#define ESPNOW_WIFI_IF   ESP_IF_WIFI_STA
+#else
+#define ESPNOW_WIFI_MODE WIFI_MODE_AP
+#define ESPNOW_WIFI_IF   ESP_IF_WIFI_AP
+#endif
 
 esp_now_peer_info_t slave;
 uint32_t sentCnt = 0;
@@ -12,6 +21,8 @@ void setup() {
   Serial.println("ESPNow/Basic/Slave Example");
   //Set device in AP mode to begin with
   WiFi.mode(WIFI_STA); // must be WIFI_STA; WIFI_AP doesn't work
+  esp_wifi_set_protocol(ESPNOW_WIFI_IF, WIFI_PROTOCOL_11B|WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11N|WIFI_PROTOCOL_LR);
+
   delay(10);
   memset(&slave, 0, sizeof(slave));
   // WiFi.disconnect();
