@@ -21,7 +21,7 @@ void setup() {
   Serial.println("ESPNow/Basic/Slave Example");
   //Set device in AP mode to begin with
   WiFi.mode(WIFI_STA); // must be WIFI_STA; WIFI_AP doesn't work
-  esp_wifi_set_protocol(ESPNOW_WIFI_IF, WIFI_PROTOCOL_11B|WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11N|WIFI_PROTOCOL_LR);
+  esp_wifi_set_protocol(ESPNOW_WIFI_IF, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N | WIFI_PROTOCOL_LR);
 
   delay(10);
   memset(&slave, 0, sizeof(slave));
@@ -52,54 +52,54 @@ void setup() {
   //Copies the array address to the structure
   memcpy(slave.peer_addr, master_mac, sizeof(master_mac));
   //Add the slave
-   esp_err_t addStatus = esp_now_add_peer(&slave);
-      if (addStatus == ESP_OK) {
-        // Pair success
-        Serial.println("Pair success");
-      } else if (addStatus == ESP_ERR_ESPNOW_NOT_INIT) {
-        // How did we get so far!!
-        Serial.println("ESPNOW Not Init");
-      } else if (addStatus == ESP_ERR_ESPNOW_ARG) {
-        Serial.println("Invalid Argument");
-      } else if (addStatus == ESP_ERR_ESPNOW_FULL) {
-        Serial.println("Peer list full");
-      } else if (addStatus == ESP_ERR_ESPNOW_NO_MEM) {
-        Serial.println("Out of memory");
-      } else if (addStatus == ESP_ERR_ESPNOW_EXIST) {
-        Serial.println("Peer Exists");
-      } else {
-        Serial.println("Not sure what happened");
-      }
+  esp_err_t addStatus = esp_now_add_peer(&slave);
+  if (addStatus == ESP_OK) {
+    // Pair success
+    Serial.println("Pair success");
+  } else if (addStatus == ESP_ERR_ESPNOW_NOT_INIT) {
+    // How did we get so far!!
+    Serial.println("ESPNOW Not Init");
+  } else if (addStatus == ESP_ERR_ESPNOW_ARG) {
+    Serial.println("Invalid Argument");
+  } else if (addStatus == ESP_ERR_ESPNOW_FULL) {
+    Serial.println("Peer list full");
+  } else if (addStatus == ESP_ERR_ESPNOW_NO_MEM) {
+    Serial.println("Out of memory");
+  } else if (addStatus == ESP_ERR_ESPNOW_EXIST) {
+    Serial.println("Peer Exists");
+  } else {
+    Serial.println("Not sure what happened");
   }
+}
 
 
 void loop() {
   uint8_t data = 1;
-   esp_err_t result = esp_now_send(slave.peer_addr, &data, sizeof(data));
-   if (result == ESP_OK) {
-		Serial.println("Success");
-	}
-	else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
-		// How did we get so far!!
-		Serial.println("ESPNOW not Init.");
-	}
-	else if (result == ESP_ERR_ESPNOW_ARG) {
-		Serial.println("Invalid Argument");
-	}
-	else if (result == ESP_ERR_ESPNOW_INTERNAL) {
-		Serial.println("Internal Error");
-	}
-	else if (result == ESP_ERR_ESPNOW_NO_MEM) {
-		Serial.println("ESP_ERR_ESPNOW_NO_MEM");
-	}
-	else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
-		Serial.println("Peer not found.");
-	}
-	else {
-		Serial.println("Not sure what happened");
-	}
+  esp_err_t result = esp_now_send(slave.peer_addr, &data, sizeof(data));
+  if (result == ESP_OK) {
+    Serial.println("Success");
+  }
+  else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
+    // How did we get so far!!
+    Serial.println("ESPNOW not Init.");
+  }
+  else if (result == ESP_ERR_ESPNOW_ARG) {
+    Serial.println("Invalid Argument");
+  }
+  else if (result == ESP_ERR_ESPNOW_INTERNAL) {
+    Serial.println("Internal Error");
+  }
+  else if (result == ESP_ERR_ESPNOW_NO_MEM) {
+    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
+  }
+  else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
+    Serial.println("Peer not found.");
+  }
+  else {
+    Serial.println("Not sure what happened");
+  }
   Serial.println(result);
-   delay(5*1000);
+  delay(5 * 1000);
   // const uint8_t *peer_addr = slave.peer_addr;
   // esp_err_t result = esp_now_send(peer_addr, &data, sizeof(data));
 }
